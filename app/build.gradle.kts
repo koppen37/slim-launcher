@@ -63,7 +63,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Kotlin Libraries
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
 
     // Support Libraries
     implementation("androidx.appcompat:appcompat:1.2.0")

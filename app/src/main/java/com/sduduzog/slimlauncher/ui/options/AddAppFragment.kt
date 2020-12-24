@@ -24,11 +24,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.add_app_fragment.*
 
 @AndroidEntryPoint
-class AddAppFragment : BaseFragment(), OnAppClickedListener {
+open class AddAppFragment : BaseFragment(), OnAppClickedListener {
 
     override fun getFragmentView(): ViewGroup = add_app_fragment
 
-    private  val viewModel: AddAppViewModel by viewModels()
+    open val viewModel: AddAppViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.add_app_fragment, container, false)

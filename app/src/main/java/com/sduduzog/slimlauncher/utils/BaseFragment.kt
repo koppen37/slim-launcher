@@ -1,15 +1,20 @@
 package com.sduduzog.slimlauncher.utils
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.pm.LauncherApps
 import android.os.Build
+import android.os.UserManager
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
-import com.sduduzog.slimlauncher.MainActivity
 import com.sduduzog.slimlauncher.R
+import com.sduduzog.slimlauncher.data.model.App
+import com.sduduzog.slimlauncher.models.HomeApp
 
 abstract class BaseFragment : Fragment(), ISubscriber {
 
@@ -49,6 +54,24 @@ abstract class BaseFragment : Fragment(), ISubscriber {
         with(activity as IPublisher) {
             this.detachSubscriber(this@BaseFragment)
         }
+    }
+
+    fun onLaunch(app: App, view: View){
+        try {
+            val manager = requireContext().getSystemService(Context.USER_SERVICE) as UserManager
+            val launcher = requireContext().getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+
+            val componentName = ComponentName(app.packageName, app.activityName)
+            val userHandle = manager.getUserForSerialNumber(app.userSerial)
+
+            launcher.startMainActivity(componentName, userHandle, view.clipBounds, null)
+        } catch (e: Exception) {
+            // Do no shit yet
+        }
+    }
+
+    fun onLaunch(app: HomeApp, view: View) {
+        onLaunch(App.from(app), view)
     }
 
     protected fun launchActivity(view: View, intent: Intent) {

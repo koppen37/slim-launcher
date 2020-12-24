@@ -18,6 +18,7 @@
     <string name="prefs_settings_key_theme" translatable="false">key_theme</string>
     <string name="prefs_settings_key_time_format" translatable="false">time_format</string>
     <string name="prefs_settings_key_toggle_status_bar" translatable="false">show_status_bar</string>
+    <string name="prefs_settings_key_search_button" translatable="false">show_search_button</string>
     <string name="prefs_settings_key_toggle_time" translatable="false">show_time</string>
     <string name="prefs_settings_key_toggle_date" translatable="false">show_date</string>
     <string name="prefs_settings_key_toggle_call" translatable="false">show_call</string>

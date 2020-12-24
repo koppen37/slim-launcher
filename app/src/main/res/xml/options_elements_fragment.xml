@@ -32,6 +32,12 @@
             android:title="@string/options_elements_fragment_toggle_camera"
             android:defaultValue="true"
             app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            android:key="@string/prefs_settings_key_search_button"
+            android:title="@string/options_elements_fragment_search_button"
+            android:defaultValue="true"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
     <PreferenceCategory

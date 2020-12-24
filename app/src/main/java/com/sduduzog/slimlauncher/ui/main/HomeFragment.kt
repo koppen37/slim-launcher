@@ -2,9 +2,7 @@ package com.sduduzog.slimlauncher.ui.main
 
 
 import android.content.*
-import android.content.pm.LauncherApps
 import android.os.Bundle
-import android.os.UserManager
 import android.provider.AlarmClock
 import android.provider.CalendarContract
 import android.provider.MediaStore
@@ -16,7 +14,6 @@ import androidx.navigation.Navigation
 import androidx.preference.PreferenceManager
 import com.sduduzog.slimlauncher.R
 import com.sduduzog.slimlauncher.adapters.HomeAdapter
-import com.sduduzog.slimlauncher.models.HomeApp
 import com.sduduzog.slimlauncher.models.MainViewModel
 import com.sduduzog.slimlauncher.utils.BaseFragment
 import com.sduduzog.slimlauncher.utils.OnLaunchAppListener
@@ -57,6 +54,8 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
 
         setEventListeners()
         home_fragment_options.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_optionsFragment))
+        home_fragment_search.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_searchFragment))
+
     }
 
     override fun onStart() {
@@ -148,20 +147,6 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
         home_fragment_date.text = fWatchDate.format(date)
     }
 
-    override fun onLaunch(app: HomeApp, view: View) {
-        try {
-            val manager = requireContext().getSystemService(Context.USER_SERVICE) as UserManager
-            val launcher = requireContext().getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
-
-            val componentName = ComponentName(app.packageName, app.activityName)
-            val userHandle = manager.getUserForSerialNumber(app.userSerial)
-
-            launcher.startMainActivity(componentName, userHandle, view.clipBounds, null)
-        } catch (e: Exception) {
-            // Do no shit yet
-        }
-    }
-
     override fun onBack(): Boolean {
         home_fragment.transitionToStart()
         return true
@@ -182,6 +167,7 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
         setVisibility(home_fragment_date, R.string.prefs_settings_key_toggle_date)
         setVisibility(home_fragment_call, R.string.prefs_settings_key_toggle_call)
         setVisibility(home_fragment_camera, R.string.prefs_settings_key_toggle_camera)
+        setVisibility(home_fragment_search, R.string.prefs_settings_key_search_button)
     }
 
     private fun setVisibility(view : View, settingRef : Int){

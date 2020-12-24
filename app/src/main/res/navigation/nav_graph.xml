@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_optionsFragment"
             app:destination="@id/optionsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchAppFragment" />
     </fragment>
 
     <fragment
@@ -47,6 +50,12 @@
         android:id="@+id/addAppFragment"
         android:name="com.sduduzog.slimlauncher.ui.options.AddAppFragment"
         android:label="add_app_fragment"
+        tools:layout="@layout/add_app_fragment" />
+
+    <fragment
+        android:id="@+id/searchAppFragment"
+        android:name="com.sduduzog.slimlauncher.ui.main.SearchAppFragment"
+        android:label="search_app_fragment"
         tools:layout="@layout/add_app_fragment" />
 
 
