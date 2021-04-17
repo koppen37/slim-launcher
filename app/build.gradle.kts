@@ -1,9 +1,9 @@
 plugins {
     id("com.android.application")
-    id("dagger.hilt.android.plugin")
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -16,16 +16,16 @@ android {
         versionCode = 52
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
-        signingConfigs {
-            if (System.getenv("CIRCLECI").isNullOrEmpty()) {
-                register("release") {
-                    storeFile = file(project.extra["RELEASE_STORE_FILE"] as String)
-                    storePassword = project.extra["RELEASE_STORE_PASSWORD"] as String
-                    keyAlias = project.extra["RELEASE_KEY_ALIAS"] as String
-                    keyPassword = project.extra["RELEASE_KEY_PASSWORD"] as String
-                }
-            }
-        }
+//        signingConfigs {
+//            if (System.getenv("CIRCLECI").isNullOrEmpty()) {
+///*                register("release") {
+//                    storeFile = file(project.extra["RELEASE_STORE_FILE"] as String)
+//                    storePassword = project.extra["RELEASE_STORE_PASSWORD"] as String
+//                    keyAlias = project.extra["RELEASE_KEY_ALIAS"] as String
+//                    keyPassword = project.extra["RELEASE_KEY_PASSWORD"] as String
+//                }*/
+//            }
+//        }
         lintOptions {
             isAbortOnError = false
         }
@@ -38,8 +38,8 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            if (System.getenv("CIRCLECI").isNullOrEmpty())
-                signingConfig = signingConfigs.getByName("release")
+//            if (System.getenv("CIRCLECI").isNullOrEmpty())
+//                signingConfig = signingConfigs.getByName("release")
         }
         named("debug").configure {
             isMinifyEnabled = false
@@ -84,8 +84,8 @@ dependencies {
     implementation("com.intuit.ssp:ssp-android:1.0.6")
     implementation("com.google.dagger:hilt-android:2.29-alpha")
     implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02")
-    kapt("androidx.hilt:hilt-compiler:1.0.0-alpha02")
     kapt("com.google.dagger:hilt-android-compiler:2.29-alpha")
+    kapt("androidx.hilt:hilt-compiler:1.0.0-alpha02")
 
     // Test libs
 
