@@ -10,6 +10,7 @@ import com.sduduzog.slimlauncher.data.model.App
 class AddAppViewModel @ViewModelInject constructor (baseDao: BaseDao) : ViewModel() {
     private val repository = Repository(baseDao)
     private var filterQuery = ""
+    private var showAllApps = true
     private val regex = Regex("[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/? ]")
     private val _installedApps = mutableListOf<App>()
     private val _homeApps = mutableListOf<App>()
@@ -24,12 +25,20 @@ class AddAppViewModel @ViewModelInject constructor (baseDao: BaseDao) : ViewMode
         repository.apps.observeForever(homeAppsObserver)
     }
 
+    fun setShowAllApps(bool: Boolean){
+        showAllApps = bool
+    }
     fun filterApps(query: String = "") {
         this.filterQuery = regex.replace(query, "")
         this.updateDisplayedApps()
     }
 
     private fun updateDisplayedApps() {
+        if(!showAllApps && filterQuery.equals("")){
+            this.apps.postValue(listOf<App>())
+            return
+        }
+
         val filteredApps = _installedApps.filterNot { _homeApps.contains(it) }
         this.apps.postValue(filteredApps.filter { regex.replace(it.appName, "").contains(filterQuery, ignoreCase = true) })
     }
