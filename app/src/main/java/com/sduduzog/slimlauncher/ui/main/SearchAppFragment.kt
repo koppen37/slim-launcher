@@ -11,5 +11,7 @@ class SearchAppFragment : AddAppFragment() {
     }
     override fun onAppClicked(app: App) {
         onLaunch(app, getFragmentView())
+        getParentFragmentManager().popBackStack();
     }
+
 }
