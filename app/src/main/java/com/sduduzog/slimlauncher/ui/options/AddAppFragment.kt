@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.add_app_fragment.*
 
 @AndroidEntryPoint
 open class AddAppFragment : BaseFragment(), OnAppClickedListener {
+    private lateinit var inputMethodManager: InputMethodManager
 
     override fun getFragmentView(): ViewGroup = add_app_fragment
 
@@ -37,6 +39,11 @@ open class AddAppFragment : BaseFragment(), OnAppClickedListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val adapter = AddAppAdapter(this)
+
+        add_app_fragment_edit_text.requestFocus()
+
+        inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
 
         add_app_fragment_list.adapter = adapter
 
