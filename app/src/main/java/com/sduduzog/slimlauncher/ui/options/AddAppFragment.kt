@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.add_app_fragment.*
 
 @AndroidEntryPoint
 open class AddAppFragment : BaseFragment(), OnAppClickedListener {
-    private lateinit var inputMethodManager: InputMethodManager
+    open lateinit var inputMethodManager: InputMethodManager
 
     override fun getFragmentView(): ViewGroup = add_app_fragment
 
@@ -43,7 +43,9 @@ open class AddAppFragment : BaseFragment(), OnAppClickedListener {
         add_app_fragment_edit_text.requestFocus()
 
         inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+        inputMethodManager.showSoftInput(add_app_fragment_edit_text, InputMethodManager.SHOW_IMPLICIT)
+
+
 
         add_app_fragment_list.adapter = adapter
 
