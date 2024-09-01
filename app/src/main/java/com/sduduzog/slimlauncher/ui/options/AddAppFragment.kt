@@ -27,7 +27,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 open class AddAppFragment : BaseFragment(), OnAppClickedListener {
-    open lateinit var inputMethodManager: InputMethodManager
 
     private var _binding: AddAppFragmentBinding? = null
     private val binding get() = _binding
@@ -45,7 +44,7 @@ open class AddAppFragment : BaseFragment(), OnAppClickedListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             requireActivity().window.insetsController?.show(WindowInsetsCompat.Type.ime())
         } else {
-            inputMethodManager =
+            val inputMethodManager =
                 requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(
                 binding!!.addAppFragmentEditText,

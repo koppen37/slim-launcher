@@ -1,6 +1,7 @@
 package com.sduduzog.slimlauncher.ui.main
 
 import android.os.Bundle
+import androidx.navigation.NavController
 import com.sduduzog.slimlauncher.data.model.App
 import com.sduduzog.slimlauncher.ui.options.AddAppFragment
 import androidx.navigation.Navigation
@@ -21,9 +22,7 @@ class SearchAppFragment : AddAppFragment() {
     }
     override fun onAppClicked(app: App) {
         onLaunch(app, getFragmentView())
-
-        inputMethodManager.hideSoftInputFromWindow(binding!!.addAppFragmentEditText.windowToken, 0)
-        Navigation.findNavController(binding!!.addAppFragment).popBackStack()
+        parentFragmentManager.popBackStack()
     }
 
 }

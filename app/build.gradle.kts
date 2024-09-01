@@ -67,6 +67,11 @@ android {
     lint {
         abortOnError = false
     }
+
+    hilt {
+        enableAggregatingTask = true
+    }
+
     namespace = "com.sduduzog.slimlauncher"
 }
 
