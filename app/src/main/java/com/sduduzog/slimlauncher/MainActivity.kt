@@ -2,9 +2,18 @@ package com.sduduzog.slimlauncher
 
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import androidx.preference.PreferenceManager
@@ -36,11 +45,6 @@ class MainActivity : AppCompatActivity(),
         subscribers.remove(s as BaseFragment)
     }
 
-    private fun dispatchBack() {
-        for (s in subscribers) if (s.onBack()) return
-        completeBackAction()
-    }
-
     private fun dispatchHome() {
         for (s in subscribers) s.onHome()
     }
@@ -50,7 +54,7 @@ class MainActivity : AppCompatActivity(),
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         settings = getSharedPreferences(getString(R.string.prefs_settings), MODE_PRIVATE)
-        settings.registerOnSharedPreferenceChangeListener(this)
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this)
         PreferenceManager.setDefaultValues(applicationContext, R.xml.options_fragment, true)
         PreferenceManager.setDefaultValues(applicationContext, R.xml.options_elements_fragment, true)
 
@@ -62,7 +66,12 @@ class MainActivity : AppCompatActivity(),
 
     override fun onResume() {
         super.onResume()
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, android.R.anim.fade_in, android.R.anim.fade_out)
+        } else {
+            @Suppress("DEPRECATION")
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
         toggleStatusBar()
     }
 
@@ -81,6 +90,11 @@ class MainActivity : AppCompatActivity(),
         if (hasFocus) toggleStatusBar()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .unregisterOnSharedPreferenceChangeListener(this)
+    }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, s: String?) {
         if (s.equals(getString(R.string.prefs_settings_key_theme), true)) {
@@ -100,30 +114,36 @@ class MainActivity : AppCompatActivity(),
         return theme
     }
 
-    override fun onBackPressed() {
-        dispatchBack()
-    }
-
     override fun onHomePressed() {
         dispatchHome()
         navigator.popBackStack(R.id.homeFragment, false)
     }
 
-    private fun showSystemUI() {
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
-    }
-
-    private fun hideSystemUI() {
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_FULLSCREEN)
-    }
-
     private fun toggleStatusBar() {
         val showBar = settings.getBoolean(getString(R.string.prefs_settings_key_toggle_status_bar), true)
-        if (showBar) {
-            showSystemUI()
+        if(!showBar) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                //TODO: statusbar blijft zichtbaar...
+                window.statusBarColor = Color.TRANSPARENT
+                window.insetsController?.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+                window.insetsController?.hide(WindowInsets.Type.statusBars())
+//                WindowCompat.setDecorFitsSystemWindows(window, false)
+            } else {
+                @Suppress("DEPRECATION")
+                val uiOptions = (View. SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View. SYSTEM_UI_FLAG_LAYOUT_STABLE)
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility = uiOptions
+            }
         } else {
-            hideSystemUI()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.insetsController?.show(WindowInsets.Type.statusBars())
+                window.insetsController?.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_DEFAULT)
+            } else {
+                @Suppress("DEPRECATION")
+                val uiOptions = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility = uiOptions
+            }
         }
     }
 
@@ -139,9 +159,5 @@ class MainActivity : AppCompatActivity(),
                 else -> R.style.AppTheme
             }
         }
-    }
-
-    private fun completeBackAction() {
-        super.onBackPressed()
     }
 }

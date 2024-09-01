@@ -9,6 +9,7 @@ import android.os.UserManager
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsetsController
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
@@ -20,18 +21,39 @@ abstract class BaseFragment : Fragment(), ISubscriber, OnLaunchAppListener {
 
     abstract fun getFragmentView(): ViewGroup
 
-
-    override fun onResume() {
-        super.onResume()
+    fun set_statusbar_color() {
         val settings = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val active = Integer.parseInt(settings.getString(getString(R.string.prefs_settings_key_theme), "0")!!)
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val window = requireActivity().window
             when (active) {
                 0, 3, 5 -> {
-                    val flags = requireActivity().window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    getFragmentView().systemUiVisibility = flags
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        window.insetsController?.setSystemBarsAppearance(
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                        )
+                    } else {
+                        @Suppress("DEPRECATION")
+                        val flags = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        @Suppress("DEPRECATION")
+                        getFragmentView().systemUiVisibility = flags
+                    }
+
+                }
+                else -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        requireActivity().window.insetsController?.setSystemBarsAppearance(
+                            0,
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                        )
+                    } else {
+                        @Suppress("DEPRECATION")
+                        val flags = requireActivity().window.decorView.systemUiVisibility
+                        @Suppress("DEPRECATION")
+                        getFragmentView().systemUiVisibility = flags
+                    }
                 }
 
             }
@@ -39,6 +61,12 @@ abstract class BaseFragment : Fragment(), ISubscriber, OnLaunchAppListener {
             requireContext().theme.resolveAttribute(R.attr.colorPrimary, value, true)
             requireActivity().window.statusBarColor = value.data
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        set_statusbar_color()
 
     }
 

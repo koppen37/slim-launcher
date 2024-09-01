@@ -99,11 +99,11 @@ class CustomiseAppsFragment : BaseFragment(), OnShitDoneToAppsListener {
                 recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                return listener.onViewMoved(viewHolder.adapterPosition, target.adapterPosition)
+                return listener.onViewMoved(viewHolder.absoluteAdapterPosition, target.absoluteAdapterPosition)
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                listener.onViewSwiped(viewHolder.adapterPosition)
+                listener.onViewSwiped(viewHolder.absoluteAdapterPosition)
             }
 
             override fun isLongPressDragEnabled() = false

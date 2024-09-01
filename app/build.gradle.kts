@@ -1,17 +1,17 @@
 plugins {
     id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
+
     id("dagger.hilt.android.plugin")
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.20" // this version matches your Kotlin version
-
+    kotlin("android")
+    kotlin("kapt")
 }
 
 android {
     compileSdk = 34
     defaultConfig {
         applicationId = "com.sduduzog.slimlauncher"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 34
         versionName = "2.4.22"
         versionCode = 55

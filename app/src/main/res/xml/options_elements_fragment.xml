@@ -18,13 +18,13 @@
         <SwitchPreference
             android:key="@string/prefs_settings_key_toggle_call"
             android:title="@string/options_elements_fragment_toggle_call"
-            android:defaultValue="true"
+            android:defaultValue="false"
              />
 
         <SwitchPreference
             android:key="@string/prefs_settings_key_toggle_camera"
             android:title="@string/options_elements_fragment_toggle_camera"
-            android:defaultValue="true"/>
+            android:defaultValue="false"/>
 
         <SwitchPreference
             android:key="@string/prefs_settings_key_search_button"
