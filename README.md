@@ -4,3 +4,4 @@
 > - Updated dependencies/gradle
 > - Added search functionality
 > - Show/hide quick shortcuts (camera/telephone)
+> - Toggle on/off clock/calendar as shortcuts to corresponding apps
