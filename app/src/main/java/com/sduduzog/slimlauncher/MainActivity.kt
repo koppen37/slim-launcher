@@ -9,12 +9,12 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import androidx.preference.PreferenceManager
 import com.sduduzog.slimlauncher.di.MainFragmentFactoryEntryPoint
+import com.sduduzog.slimlauncher.databinding.MainActivityBinding
 import com.sduduzog.slimlauncher.utils.BaseFragment
 import com.sduduzog.slimlauncher.utils.HomeWatcher
 import com.sduduzog.slimlauncher.utils.IPublisher
 import com.sduduzog.slimlauncher.utils.ISubscriber
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.EntryPointAccessors
 
 
 @AndroidEntryPoint
@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(),
     private lateinit var settings: SharedPreferences
     private lateinit var navigator: NavController
     private lateinit var homeWatcher: HomeWatcher
+    private lateinit var binding: MainActivityBinding
     private val subscribers: MutableSet<BaseFragment> = mutableSetOf()
 
     override fun attachSubscriber(s: ISubscriber) {
@@ -45,12 +46,10 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val entryPoint = EntryPointAccessors.fromActivity(this, MainFragmentFactoryEntryPoint::class.java)
-        supportFragmentManager.fragmentFactory = entryPoint.getMainFragmentFactory()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
-
-        settings = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        binding = MainActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        settings = getSharedPreferences(getString(R.string.prefs_settings), MODE_PRIVATE)
         settings.registerOnSharedPreferenceChangeListener(this)
         PreferenceManager.setDefaultValues(applicationContext, R.xml.options_fragment, true)
         PreferenceManager.setDefaultValues(applicationContext, R.xml.options_elements_fragment, true)

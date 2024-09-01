@@ -9,16 +9,17 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.preference.PreferenceManager
 import com.sduduzog.slimlauncher.R
 import com.sduduzog.slimlauncher.adapters.HomeAdapter
+import com.sduduzog.slimlauncher.databinding.HomeFragmentBinding
+import com.sduduzog.slimlauncher.models.HomeApp
 import com.sduduzog.slimlauncher.models.MainViewModel
 import com.sduduzog.slimlauncher.utils.BaseFragment
 import com.sduduzog.slimlauncher.utils.OnLaunchAppListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.home_fragment.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,22 +27,24 @@ import java.util.*
 @AndroidEntryPoint
 class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLaunchAppListener {
     private lateinit var settings : SharedPreferences
+    private var _binding: HomeFragmentBinding? = null
+    private val binding get() = _binding
+    private val viewModel: MainViewModel by viewModels()
+
     private lateinit var receiver: BroadcastReceiver
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.home_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = HomeFragmentBinding.inflate(inflater, container, false)
         val adapter1 = HomeAdapter(this)
         val adapter2 = HomeAdapter(this)
-        home_fragment_list.adapter = adapter1
-        home_fragment_list_exp.adapter = adapter2
+        binding!!.homeFragmentList.adapter = adapter1
+        binding!!.homeFragmentListExp.adapter = adapter2
 
         settings = PreferenceManager.getDefaultSharedPreferences(context)
-        viewModel.apps.observe(viewLifecycleOwner, Observer { list ->
+        viewModel.apps.observe(viewLifecycleOwner) { list ->
             list?.let { apps ->
                 adapter1.setItems(apps.filter {
                     it.sortingIndex < 4
@@ -50,12 +53,14 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
                     it.sortingIndex >= 4
                 })
             }
-        })
-
+        }
+//
         setEventListeners()
-        home_fragment_options.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_optionsFragment))
-        home_fragment_search.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_searchFragment))
+        // Maybe homeFragmentOptions..
+        binding!!.homeFragmentOptions.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_optionsFragment))
+        binding!!.homeFragmentSearch.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_searchFragment))
 
+        return binding?.root
     }
 
     override fun onStart() {
@@ -65,7 +70,7 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
         activity?.registerReceiver(receiver, IntentFilter(Intent.ACTION_TIME_TICK))
     }
 
-    override fun getFragmentView(): ViewGroup = home_fragment
+    override fun getFragmentView(): ViewGroup = binding!!.root
 
     override fun onResume() {
         super.onResume()
@@ -82,7 +87,7 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
         val dateIsShortcut = settings.getBoolean(getString(R.string.prefs_settings_key_shortcut_date), false)
 
         if (timeIsShortcut) {
-            home_fragment_time.setOnClickListener {
+            binding!!.homeFragmentTime.setOnClickListener {
                 try {
                     val intent = Intent(AlarmClock.ACTION_SHOW_ALARMS)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -95,7 +100,7 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
         }
 
         if (dateIsShortcut) {
-            home_fragment_date.setOnClickListener {
+            binding!!.homeFragmentDate.setOnClickListener {
                 try {
                     val builder = CalendarContract.CONTENT_URI.buildUpon().appendPath("time")
                     val intent = Intent(Intent.ACTION_VIEW, builder.build())
@@ -107,7 +112,7 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
             }
         }
 
-        home_fragment_call.setOnClickListener { view ->
+        binding!!.homeFragmentCall .setOnClickListener { view ->
             try {
                 val pm = context?.packageManager!!
                 val intent = Intent(Intent.ACTION_DIAL)
@@ -121,7 +126,7 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
             }
         }
 
-        home_fragment_camera.setOnClickListener {
+        binding!!.homeFragmentCamera .setOnClickListener {
             try {
                 val intent = Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
                 launchActivity(it, intent)
@@ -132,7 +137,9 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
     }
 
     fun updateClock() {
-        val active = Integer.parseInt(settings.getString(getString(R.string.prefs_settings_key_time_format), "0")!!)
+        val active =
+            context?.getSharedPreferences(getString(R.string.prefs_settings), Context.MODE_PRIVATE)
+                ?.getInt(getString(R.string.prefs_settings_key_time_format), 0)
         val date = Date()
 
         val currentLocale = Locale.getDefault()
@@ -141,20 +148,35 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
             2 -> SimpleDateFormat("h:mm aa", currentLocale)
             else -> DateFormat.getTimeInstance(DateFormat.SHORT)
         }
-        home_fragment_time.text = fWatchTime.format(date)
+        binding!!.homeFragmentTime .text = fWatchTime.format(date)
 
 
         val fWatchDate = SimpleDateFormat("EEE, MMM dd", currentLocale)
-        home_fragment_date.text = fWatchDate.format(date)
+        binding!!.homeFragmentDate .text = fWatchDate.format(date)
+    }
+
+    override fun onLaunch(app: HomeApp, view: View) {
+        try {
+            val manager = requireContext().getSystemService(Context.USER_SERVICE) as UserManager
+            val launcher =
+                requireContext().getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+
+            val componentName = ComponentName(app.packageName, app.activityName)
+            val userHandle = manager.getUserForSerialNumber(app.userSerial)
+
+            launcher.startMainActivity(componentName, userHandle, view.clipBounds, null)
+        } catch (e: Exception) {
+            // Do no shit yet
+        }
     }
 
     override fun onBack(): Boolean {
-        home_fragment.transitionToStart()
+        binding!!.root.transitionToStart()
         return true
     }
 
     override fun onHome() {
-        home_fragment.transitionToEnd()
+        binding!!.root.transitionToEnd()
     }
 
     inner class ClockReceiver : BroadcastReceiver() {

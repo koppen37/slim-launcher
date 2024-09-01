@@ -1,49 +1,52 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 31
     defaultConfig {
         applicationId = "com.sduduzog.slimlauncher"
-        minSdkVersion(21)
-        targetSdkVersion(30)
-        versionName = "2.4.18"
-        versionCode = 52
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        minSdk = 21
+        targetSdk = 31
+        versionName = "2.4.21"
+        versionCode = 55
         vectorDrawables { useSupportLibrary = true }
-//        signingConfigs {
-//            if (System.getenv("CIRCLECI").isNullOrEmpty()) {
-///*                register("release") {
-//                    storeFile = file(project.extra["RELEASE_STORE_FILE"] as String)
-//                    storePassword = project.extra["RELEASE_STORE_PASSWORD"] as String
-//                    keyAlias = project.extra["RELEASE_KEY_ALIAS"] as String
-//                    keyPassword = project.extra["RELEASE_KEY_PASSWORD"] as String
-//                }*/
-//            }
-//        }
-        lintOptions {
-            isAbortOnError = false
+        signingConfigs {
+            if (project.extra.has("RELEASE_STORE_FILE")) {
+                register("release") {
+                    storeFile = file(project.extra["RELEASE_STORE_FILE"] as String)
+                    storePassword = project.extra["RELEASE_STORE_PASSWORD"] as String
+                    keyAlias = project.extra["RELEASE_KEY_ALIAS"] as String
+                    keyPassword = project.extra["RELEASE_KEY_PASSWORD"] as String
+                }
+            }
         }
     }
 
-
+    buildFeatures {
+        viewBinding = true
+        compose = true
+    }
 
     buildTypes {
         named("release").configure {
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-//            if (System.getenv("CIRCLECI").isNullOrEmpty())
-//                signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.maybeCreate("release")
         }
         named("debug").configure {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -53,9 +56,14 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.1"
+    }
     testOptions {
         unitTests.isIncludeAndroidResources = true
+    }
+    lint {
+        abortOnError = false
     }
 }
 
@@ -63,62 +71,53 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Kotlin Libraries
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10")
 
     // Support Libraries
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
-    implementation("androidx.preference:preference:1.1.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
 
     // Arch Components
-    implementation("androidx.core:core-ktx:1.5.0-alpha05")
-    implementation("androidx.fragment:fragment-ktx:1.2.5")
+    implementation("androidx.core:core-ktx:1.7.0-beta01")
+    implementation("androidx.fragment:fragment-ktx:1.4.1")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.3.2")
-    implementation("androidx.room:room-runtime:2.2.5")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.2.0")
-    kapt("androidx.room:room-compiler:2.2.5")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
+    implementation("androidx.room:room-runtime:2.4.2")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")
+    kapt("androidx.room:room-compiler:2.4.2")
 
     //3rd party libs
     implementation("com.intuit.sdp:sdp-android:1.0.6")
     implementation("com.intuit.ssp:ssp-android:1.0.6")
-    implementation("com.google.dagger:hilt-android:2.29-alpha")
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02")
-    kapt("com.google.dagger:hilt-android-compiler:2.29-alpha")
-    kapt("androidx.hilt:hilt-compiler:1.0.0-alpha02")
+    implementation("com.google.dagger:hilt-android:2.41")
+    kapt("com.google.dagger:hilt-compiler:2.41")
 
-    // Test libs
+    // Integration with activities
+    implementation("androidx.activity:activity-compose:1.4.0")
+    // Compose Material Design
+    implementation("androidx.compose.material:material:1.1.1")
+    // Animations
+    implementation("androidx.compose.animation:animation:1.1.1")
+    // Tooling support (Previews, etc.)
+    implementation("androidx.compose.ui:ui-tooling:1.1.1")
+    // Integration with ViewModels
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    // When using a AppCompat theme
+    implementation("com.google.accompanist:accompanist-appcompat-theme:0.16.0")
 
-    testImplementation("androidx.test:core:1.3.0")
 
-    testImplementation("androidx.test:runner:1.3.0")
-    testImplementation("androidx.test:rules:1.3.0")
-
-    testImplementation("androidx.test.ext:junit:1.1.2")
-    testImplementation("androidx.test.ext:truth:1.3.0")
-    testImplementation("com.google.truth:truth:1.0")
-
-
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
-    testImplementation("androidx.fragment:fragment-testing:1.2.5")
-
+    // Unit test libs
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("com.google.truth:truth:1.1.3")
     testImplementation("org.robolectric:robolectric:4.4")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("com.google.dagger:hilt-android-testing:2.41")
+    kaptTest("com.google.dagger:hilt-android-compiler:2.41")
 
-    testImplementation("org.mockito:mockito-core:2.24.5")
-
-    testImplementation("androidx.test.espresso:espresso-core:3.3.0")
-
-    testImplementation("com.google.dagger:hilt-android-testing:2.29-alpha")
-    kaptTest("com.google.dagger:hilt-android-compiler:2.29-alpha")
-
-    androidTestImplementation("androidx.room:room-testing:2.2.5")
-    androidTestImplementation("androidx.test:runner:1.3.0")
-    androidTestImplementation("androidx.test:rules:1.3.0")
-    androidTestImplementation("androidx.annotation:annotation:1.1.0")
-    androidTestImplementation("androidx.test:runner:1.3.0")
-    androidTestImplementation("androidx.test:rules:1.3.0")
-    androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.3.0")
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
+}
+kapt {
+    correctErrorTypes = true
 }

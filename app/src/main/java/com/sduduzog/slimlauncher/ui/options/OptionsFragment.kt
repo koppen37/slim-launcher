@@ -1,5 +1,7 @@
 package com.sduduzog.slimlauncher.ui.options
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
