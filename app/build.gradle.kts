@@ -85,6 +85,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
     implementation("androidx.room:room-runtime:2.4.2")
     implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")
+    implementation("androidx.preference:preference-ktx:1.2.1")
     kapt("androidx.room:room-compiler:2.4.2")
 
     //3rd party libs

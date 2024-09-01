@@ -22,7 +22,7 @@ import com.sduduzog.slimlauncher.models.AddAppViewModel
 import com.sduduzog.slimlauncher.utils.BaseFragment
 import com.sduduzog.slimlauncher.utils.OnAppClickedListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.add_app_fragment.*
+//import kotlinx.android.synthetic.main.add_app_fragment.*
 
 @AndroidEntryPoint
 open class AddAppFragment : BaseFragment(), OnAppClickedListener {
@@ -38,10 +38,10 @@ open class AddAppFragment : BaseFragment(), OnAppClickedListener {
         _binding = AddAppFragmentBinding.inflate(inflater, container, false)
         val adapter = AddAppAdapter(this)
 
-        add_app_fragment_edit_text.requestFocus()
+        binding!!.addAppFragmentEditText.requestFocus()
 
         inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(add_app_fragment_edit_text, InputMethodManager.SHOW_IMPLICIT)
+        inputMethodManager.showSoftInput(binding!!.addAppFragmentEditText, InputMethodManager.SHOW_IMPLICIT)
 
 
 

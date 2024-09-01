@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
-class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLaunchAppListener {
+class HomeFragment : BaseFragment() {
     private lateinit var settings : SharedPreferences
     private var _binding: HomeFragmentBinding? = null
     private val binding get() = _binding
@@ -43,7 +43,7 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
         binding!!.homeFragmentList.adapter = adapter1
         binding!!.homeFragmentListExp.adapter = adapter2
 
-        settings = PreferenceManager.getDefaultSharedPreferences(context)
+        settings = PreferenceManager.getDefaultSharedPreferences(requireContext())
         viewModel.apps.observe(viewLifecycleOwner) { list ->
             list?.let { apps ->
                 adapter1.setItems(apps.filter {
@@ -155,20 +155,20 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
         binding!!.homeFragmentDate .text = fWatchDate.format(date)
     }
 
-    override fun onLaunch(app: HomeApp, view: View) {
-        try {
-            val manager = requireContext().getSystemService(Context.USER_SERVICE) as UserManager
-            val launcher =
-                requireContext().getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
-
-            val componentName = ComponentName(app.packageName, app.activityName)
-            val userHandle = manager.getUserForSerialNumber(app.userSerial)
-
-            launcher.startMainActivity(componentName, userHandle, view.clipBounds, null)
-        } catch (e: Exception) {
-            // Do no shit yet
-        }
-    }
+//    override fun onLaunch(app: HomeApp, view: View) {
+//        try {
+//            val manager = requireContext().getSystemService(Context.USER_SERVICE) as UserManager
+//            val launcher =
+//                requireContext().getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+//
+//            val componentName = ComponentName(app.packageName, app.activityName)
+//            val userHandle = manager.getUserForSerialNumber(app.userSerial)
+//
+//            launcher.startMainActivity(componentName, userHandle, view.clipBounds, null)
+//        } catch (e: Exception) {
+//            // Do no shit yet
+//        }
+//    }
 
     override fun onBack(): Boolean {
         binding!!.root.transitionToStart()
@@ -186,11 +186,11 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
     }
 
     private fun setViewVisibility(){
-        setVisibility(home_fragment_time, R.string.prefs_settings_key_toggle_time)
-        setVisibility(home_fragment_date, R.string.prefs_settings_key_toggle_date)
-        setVisibility(home_fragment_call, R.string.prefs_settings_key_toggle_call)
-        setVisibility(home_fragment_camera, R.string.prefs_settings_key_toggle_camera)
-        setVisibility(home_fragment_search, R.string.prefs_settings_key_search_button)
+        setVisibility(binding!!.homeFragmentTime, R.string.prefs_settings_key_toggle_time)
+        setVisibility(binding!!.homeFragmentDate, R.string.prefs_settings_key_toggle_date)
+        setVisibility(binding!!.homeFragmentCall, R.string.prefs_settings_key_toggle_call)
+        setVisibility(binding!!.homeFragmentCamera, R.string.prefs_settings_key_toggle_camera)
+        setVisibility(binding!!.homeFragmentSearch, R.string.prefs_settings_key_search_button)
     }
 
     private fun setVisibility(view : View, settingRef : Int){

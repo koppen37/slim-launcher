@@ -16,7 +16,7 @@ import com.sduduzog.slimlauncher.R
 import com.sduduzog.slimlauncher.data.model.App
 import com.sduduzog.slimlauncher.models.HomeApp
 
-abstract class BaseFragment : Fragment(), ISubscriber {
+abstract class BaseFragment : Fragment(), ISubscriber, OnLaunchAppListener {
 
     abstract fun getFragmentView(): ViewGroup
 
@@ -70,7 +70,7 @@ abstract class BaseFragment : Fragment(), ISubscriber {
         }
     }
 
-    fun onLaunch(app: HomeApp, view: View) {
+    override fun onLaunch(app: HomeApp, view: View) {
         onLaunch(App.from(app), view)
     }
 

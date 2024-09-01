@@ -1,6 +1,5 @@
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         android:title="@string/options_fragment_elements"
@@ -8,56 +7,43 @@
 
 
     <PreferenceCategory
-        android:title="@string/options_elements_fragment_general_category"
-        app:layout="@layout/preference_category"
-        app:allowDividerAbove="false"
-        app:iconSpaceReserved="false">
+        android:title="@string/options_elements_fragment_general_category">
 
         <SwitchPreference
             android:key="@string/prefs_settings_key_toggle_status_bar"
             android:title="@string/options_elements_fragment_toggle_status_bar"
             android:defaultValue="true"
-            app:allowDividerAbove="true"
-            app:iconSpaceReserved="false"
             />
 
         <SwitchPreference
             android:key="@string/prefs_settings_key_toggle_call"
             android:title="@string/options_elements_fragment_toggle_call"
             android:defaultValue="true"
-            app:iconSpaceReserved="false" />
+             />
 
         <SwitchPreference
             android:key="@string/prefs_settings_key_toggle_camera"
             android:title="@string/options_elements_fragment_toggle_camera"
-            android:defaultValue="true"
-            app:iconSpaceReserved="false" />
+            android:defaultValue="true"/>
 
         <SwitchPreference
             android:key="@string/prefs_settings_key_search_button"
             android:title="@string/options_elements_fragment_search_button"
-            android:defaultValue="true"
-            app:iconSpaceReserved="false" />
+            android:defaultValue="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/options_elements_fragment_time_category"
-        app:layout="@layout/preference_category"
-        app:allowDividerAbove="false"
-        app:iconSpaceReserved="false">
+        android:title="@string/options_elements_fragment_time_category">
 
         <SwitchPreference
             android:key="@string/prefs_settings_key_toggle_time"
             android:title="@string/options_elements_fragment_visibility"
-            app:iconSpaceReserved="false"
-            app:allowDividerAbove="true"
             android:defaultValue="true" />
 
         <SwitchPreference
             android:key="@string/prefs_settings_key_shortcut_time"
             android:title="@string/options_elements_fragment_shortcut"
             android:summary="@string/options_elements_fragment_shortcut_time_summary"
-            app:iconSpaceReserved="false"
             android:dependency="@string/prefs_settings_key_toggle_time"
             android:defaultValue="true" />
 
@@ -68,31 +54,26 @@
             android:entries="@array/time_format_array"
             android:entryValues="@array/time_format_values"
             android:defaultValue="0"
-            android:dependency="@string/prefs_settings_key_toggle_time"
-            app:iconSpaceReserved="false" />
+            android:dependency="@string/prefs_settings_key_toggle_time"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/options_elements_fragment_date_category"
-        app:layout="@layout/preference_category"
-        app:allowDividerAbove="false"
-        app:iconSpaceReserved="false">
+        >
 
         <SwitchPreference
             android:key="@string/prefs_settings_key_toggle_date"
             android:title="@string/options_elements_fragment_visibility"
             android:defaultValue="true"
-            app:iconSpaceReserved="false"
-            app:allowDividerAbove="true"/>
+            />
 
         <SwitchPreference
             android:key="@string/prefs_settings_key_shortcut_date"
             android:title="@string/options_elements_fragment_shortcut"
             android:summary="@string/options_elements_fragment_shortcut_date_summary"
-            app:iconSpaceReserved="false"
             android:dependency="@string/prefs_settings_key_toggle_date"
             android:disableDependentsState="true"
             android:defaultValue="true" />
     </PreferenceCategory>
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>
