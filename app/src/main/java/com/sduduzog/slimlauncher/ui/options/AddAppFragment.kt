@@ -2,6 +2,7 @@ package com.sduduzog.slimlauncher.ui.options
 
 import android.content.Context
 import android.content.pm.LauncherApps
+import android.os.Build
 import android.os.Bundle
 import android.os.Process
 import android.os.UserManager
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.sduduzog.slimlauncher.R
@@ -39,9 +41,17 @@ open class AddAppFragment : BaseFragment(), OnAppClickedListener {
 
         binding!!.addAppFragmentEditText.requestFocus()
 
-        inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(binding!!.addAppFragmentEditText, InputMethodManager.SHOW_IMPLICIT)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireActivity().window.insetsController?.show(WindowInsetsCompat.Type.ime())
+        } else {
+            inputMethodManager =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(
+                binding!!.addAppFragmentEditText,
+                InputMethodManager.SHOW_IMPLICIT
+            )
+        }
 
 
         binding!!.addAppFragmentList.adapter = adapter
