@@ -1,3 +1,10 @@
+> [!NOTE]
+> This is a fork of the original slim launcher for my personal use.
+> It contains the following changes:
+> - Updated dependencies/gradle
+> - Added search functionality
+> - Show/hide quick shortcuts (camera/telephone)
+
 # Slim launcher
 > _All you need is less._
 
