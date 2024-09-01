@@ -18,7 +18,7 @@ class HomeWatcher(private val context: Context) {
 
     fun startWatch() {
         receiver?.let {
-            context.registerReceiver(it, filter)
+            context.registerReceiver(it, filter, Context.RECEIVER_EXPORTED)
         }
     }
 

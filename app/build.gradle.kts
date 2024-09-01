@@ -3,15 +3,17 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.20" // this version matches your Kotlin version
+
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 34
     defaultConfig {
         applicationId = "com.sduduzog.slimlauncher"
         minSdk = 21
-        targetSdk = 31
-        versionName = "2.4.21"
+        targetSdk = 34
+        versionName = "2.4.22"
         versionCode = 55
         vectorDrawables { useSupportLibrary = true }
         signingConfigs {
@@ -57,7 +59,7 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.1"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
@@ -65,59 +67,60 @@ android {
     lint {
         abortOnError = false
     }
+    namespace = "com.sduduzog.slimlauncher"
 }
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Kotlin Libraries
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.20")
 
     // Support Libraries
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // Arch Components
-    implementation("androidx.core:core-ktx:1.7.0-beta01")
-    implementation("androidx.fragment:fragment-ktx:1.4.1")
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.fragment:fragment-ktx:1.8.2")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
-    implementation("androidx.room:room-runtime:2.4.2")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.8.4")
     implementation("androidx.preference:preference-ktx:1.2.1")
-    kapt("androidx.room:room-compiler:2.4.2")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     //3rd party libs
-    implementation("com.intuit.sdp:sdp-android:1.0.6")
-    implementation("com.intuit.ssp:ssp-android:1.0.6")
-    implementation("com.google.dagger:hilt-android:2.41")
-    kapt("com.google.dagger:hilt-compiler:2.41")
+    implementation("com.intuit.sdp:sdp-android:1.1.1")
+    implementation("com.intuit.ssp:ssp-android:1.1.1")
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-compiler:2.52")
 
     // Integration with activities
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.activity:activity-compose:1.9.1")
     // Compose Material Design
-    implementation("androidx.compose.material:material:1.1.1")
+    implementation("androidx.compose.material:material:1.6.8")
     // Animations
-    implementation("androidx.compose.animation:animation:1.1.1")
+    implementation("androidx.compose.animation:animation:1.6.8")
     // Tooling support (Previews, etc.)
-    implementation("androidx.compose.ui:ui-tooling:1.1.1")
+    implementation("androidx.compose.ui:ui-tooling:1.6.8")
     // Integration with ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
     // When using a AppCompat theme
-    implementation("com.google.accompanist:accompanist-appcompat-theme:0.16.0")
+    implementation("com.google.accompanist:accompanist-appcompat-theme:0.34.0")
 
 
     // Unit test libs
     testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("org.robolectric:robolectric:4.4")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
-    testImplementation("com.google.dagger:hilt-android-testing:2.41")
-    kaptTest("com.google.dagger:hilt-android-compiler:2.41")
+    testImplementation("com.google.truth:truth:1.4.4")
+    testImplementation("org.robolectric:robolectric:4.13")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("com.google.dagger:hilt-android-testing:2.52")
+    kaptTest("com.google.dagger:hilt-android-compiler:2.52")
 
-    androidTestImplementation("androidx.test:runner:1.4.0")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation ("androidx.test.ext:junit:1.2.1")
 }
 kapt {
     correctErrorTypes = true

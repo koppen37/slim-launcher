@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.RegisterReceiverFlags
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.preference.PreferenceManager
@@ -67,7 +68,7 @@ class HomeFragment : BaseFragment() {
         super.onStart()
         setViewVisibility()
         receiver = ClockReceiver()
-        activity?.registerReceiver(receiver, IntentFilter(Intent.ACTION_TIME_TICK))
+        activity?.registerReceiver(receiver, IntentFilter(Intent.ACTION_TIME_TICK), Context.RECEIVER_EXPORTED)
     }
 
     override fun getFragmentView(): ViewGroup = binding!!.root
