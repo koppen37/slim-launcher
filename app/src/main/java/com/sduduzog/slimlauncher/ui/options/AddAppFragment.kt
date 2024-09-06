@@ -100,6 +100,10 @@ open class AddAppFragment : BaseFragment(), OnAppClickedListener {
 
     override fun onAppClicked(app: App) {
         viewModel.addAppToHomeScreen(app)
+        _popBackStack()
+    }
+
+    fun _popBackStack() {
         Navigation.findNavController(binding!!.root).popBackStack()
     }
 
