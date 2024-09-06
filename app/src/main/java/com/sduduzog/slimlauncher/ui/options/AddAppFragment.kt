@@ -15,7 +15,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import com.sduduzog.slimlauncher.R
 import com.sduduzog.slimlauncher.adapters.AddAppAdapter
 import com.sduduzog.slimlauncher.data.model.App
 import com.sduduzog.slimlauncher.databinding.AddAppFragmentBinding
@@ -23,6 +22,7 @@ import com.sduduzog.slimlauncher.models.AddAppViewModel
 import com.sduduzog.slimlauncher.utils.BaseFragment
 import com.sduduzog.slimlauncher.utils.OnAppClickedListener
 import dagger.hilt.android.AndroidEntryPoint
+
 //import kotlinx.android.synthetic.main.add_app_fragment.*
 
 @AndroidEntryPoint

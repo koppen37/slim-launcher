@@ -1,9 +1,7 @@
 package com.sduduzog.slimlauncher.ui.main
 
 import android.os.Bundle
-import androidx.navigation.Navigation
 import com.sduduzog.slimlauncher.data.model.App
-import com.sduduzog.slimlauncher.databinding.AddAppFragmentBinding
 import com.sduduzog.slimlauncher.ui.options.AddAppFragment
 
 
