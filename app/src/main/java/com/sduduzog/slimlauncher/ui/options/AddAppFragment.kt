@@ -34,12 +34,8 @@ open class AddAppFragment : BaseFragment(), OnAppClickedListener {
 
     open val viewModel: AddAppViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = AddAppFragmentBinding.inflate(inflater, container, false)
-        val adapter = AddAppAdapter(this)
-
+    fun _show_keyboard() {
         binding!!.addAppFragmentEditText.requestFocus()
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             requireActivity().window.insetsController?.show(WindowInsetsCompat.Type.ime())
@@ -51,10 +47,14 @@ open class AddAppFragment : BaseFragment(), OnAppClickedListener {
                 InputMethodManager.SHOW_IMPLICIT
             )
         }
+    }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = AddAppFragmentBinding.inflate(inflater, container, false)
+        val adapter = AddAppAdapter(this)
 
         binding!!.addAppFragmentList.adapter = adapter
-
+        _show_keyboard()
         viewModel.apps.observe(viewLifecycleOwner) {
             it?.let { apps ->
                 adapter.setItems(apps)
@@ -76,6 +76,7 @@ open class AddAppFragment : BaseFragment(), OnAppClickedListener {
         viewModel.setInstalledApps(getInstalledApps())
         viewModel.filterApps("")
         binding!!.addAppFragmentEditText.addTextChangedListener(onTextChangeListener)
+        _show_keyboard()
     }
 
     override fun onPause() {
