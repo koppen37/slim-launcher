@@ -1,23 +1,18 @@
 package com.sduduzog.slimlauncher
 
+//import com.sduduzog.slimlauncher.di.MainFragmentFactoryEntryPoint
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import androidx.preference.PreferenceManager
-//import com.sduduzog.slimlauncher.di.MainFragmentFactoryEntryPoint
 import com.sduduzog.slimlauncher.databinding.MainActivityBinding
 import com.sduduzog.slimlauncher.utils.BaseFragment
 import com.sduduzog.slimlauncher.utils.HomeWatcher
@@ -120,7 +115,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun toggleStatusBar() {
-        val showBar = settings.getBoolean(getString(R.string.prefs_settings_key_toggle_status_bar), true)
+        val showBar = settings.getBoolean(getString(R.string.prefs_settings_key_toggle_status_bar), false)
         if(!showBar) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 //TODO: statusbar blijft zichtbaar...
