@@ -90,11 +90,11 @@ dependencies {
 
     // Arch Components
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.fragment:fragment-ktx:1.8.2")
+    implementation("androidx.fragment:fragment-ktx:1.8.3")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.0")
     implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.8.4")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.8.5")
     implementation("androidx.preference:preference-ktx:1.2.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
@@ -105,17 +105,17 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.52")
 
     // Integration with activities
-    implementation("androidx.activity:activity-compose:1.9.1")
+    implementation("androidx.activity:activity-compose:1.9.2")
     // Compose Material Design
-    implementation("androidx.compose.material:material:1.6.8")
+    implementation("androidx.compose.material:material:1.7.0")
     // Animations
-    implementation("androidx.compose.animation:animation:1.6.8")
+    implementation("androidx.compose.animation:animation:1.7.0")
     // Tooling support (Previews, etc.)
-    implementation("androidx.compose.ui:ui-tooling:1.6.8")
+    implementation("androidx.compose.ui:ui-tooling:1.7.0")
     // Integration with ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     // When using a AppCompat theme
-    implementation("com.google.accompanist:accompanist-appcompat-theme:0.34.0")
+    implementation("com.google.accompanist:accompanist-appcompat-theme:0.36.0")
 
 
     // Unit test libs
