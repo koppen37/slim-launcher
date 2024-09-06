@@ -118,7 +118,6 @@ class MainActivity : AppCompatActivity(),
         val showBar = settings.getBoolean(getString(R.string.prefs_settings_key_toggle_status_bar), false)
         if(!showBar) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                //TODO: statusbar blijft zichtbaar...
                 window.statusBarColor = Color.TRANSPARENT
                 window.insetsController?.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
                 window.insetsController?.hide(WindowInsets.Type.statusBars())
