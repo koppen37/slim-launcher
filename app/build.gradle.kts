@@ -45,6 +45,8 @@ android {
         }
         named("debug").configure {
             isMinifyEnabled = false
+            applicationIdSuffix=".debug"
+            resValue("string", "app_name", "Slim Launcher (debug)")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
