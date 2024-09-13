@@ -16,7 +16,7 @@ class AddAppViewModel @Inject constructor(
 ) : ViewModel() {
     private var filterQuery = ""
     private var showAllApps = true
-    private val regex = Regex("[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/? ]")
+    private val _ignored_symbols_regex = Regex("[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/? ]")
     private val _installedApps = mutableListOf<App>()
     private val _homeApps = mutableListOf<App>()
     private val homeAppsObserver = Observer<List<HomeApp>> {
@@ -34,7 +34,7 @@ class AddAppViewModel @Inject constructor(
         showAllApps = bool
     }
     fun filterApps(query: String = "") {
-        this.filterQuery = regex.replace(query, "")
+        this.filterQuery = _ignored_symbols_regex.replace(query, "")
         this.updateDisplayedApps()
     }
 
@@ -46,7 +46,7 @@ class AddAppViewModel @Inject constructor(
 
         val filteredApps = _installedApps.filterNot { _homeApps.contains(it) }
         this.apps.postValue(filteredApps.filter {
-            regex.replace(it.appName, "").contains(filterQuery, ignoreCase = true)
+            _ignored_symbols_regex.replace(it.appName, "").contains(filterQuery, ignoreCase = true)
         })
     }
 
