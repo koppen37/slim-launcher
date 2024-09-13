@@ -133,6 +133,7 @@ open class AddAppFragment : BaseFragment(), OnAppClickedListener {
         list.sortBy{it.appName}
 
         val filter = mutableListOf<String>()
+        filter.add(requireContext().packageName)
         return list.filterNot { filter.contains(it.packageName) }
     }
 }
